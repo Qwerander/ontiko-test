@@ -3,7 +3,6 @@ const concat = require("gulp-concat");
 const htmlMin = require("gulp-htmlmin");
 const autoprefixer = require("gulp-autoprefixer");
 const cleanCSS = require("gulp-clean-css");
-const svgSprite = require("gulp-svg-sprite");
 const image = require("gulp-imagemin");
 const babel = require("gulp-babel");
 const notify = require("gulp-notify");
@@ -56,20 +55,6 @@ const htmlMinify = () => {
     .pipe(browserSync.stream());
 };
 
-const svgSprites = () => {
-  return src("src/images/svg/**/*.svg")
-    .pipe(
-      svgSprite({
-        mode: {
-          stack: {
-            sprite: "../sprite.svg",
-          },
-        },
-      })
-    )
-    .pipe(dest("dist/images"));
-};
-
 const scripts = () => {
   return src(["src/js/components/**/*.js", "src/js/main.js"])
     .pipe(ifProduct(flag, sourcemaps.init()))
@@ -113,7 +98,6 @@ const watchFiles = () => {
 
 watch("src/**/*.html", htmlMinify);
 watch("src/styles/**/*.css", styles);
-watch("src/images/svg/**/*.css", svgSprites);
 watch("src/js/**/*.js", scripts);
 watch("src/resources/**", resources);
 
@@ -128,6 +112,5 @@ exports.default = series(
   scripts,
   styles,
   images,
-  svgSprites,
   watchFiles
 );
